@@ -34,7 +34,8 @@ public class CurrencyConversionController {
     CurrencyConversion currencyConversion = responseEntity.getBody();
     BigDecimal conversionMultiple = currencyConversion.getConversionMultiple();
 
-    return new CurrencyConversion(10001L, from, to, quantity, conversionMultiple, quantity.multiply(conversionMultiple), "");
+    return new CurrencyConversion(10001L, from, to, quantity, conversionMultiple, quantity.multiply(conversionMultiple),
+            currencyConversion.getEnvironment() + " " + "rest template");
   }
 
   @GetMapping("/feign/from/{from}/to/{to}/quantity/{quantity}")
@@ -44,6 +45,7 @@ public class CurrencyConversionController {
     CurrencyConversion currencyConversion = proxy.retrieveExchangeValue(from, to);
     BigDecimal conversionMultiple = currencyConversion.getConversionMultiple();
 
-    return new CurrencyConversion(10001L, from, to, quantity, conversionMultiple, quantity.multiply(conversionMultiple), "");
+    return new CurrencyConversion(10001L, from, to, quantity, conversionMultiple, quantity.multiply(conversionMultiple),
+            currencyConversion.getEnvironment() + " " + "feign");
   }
 }
