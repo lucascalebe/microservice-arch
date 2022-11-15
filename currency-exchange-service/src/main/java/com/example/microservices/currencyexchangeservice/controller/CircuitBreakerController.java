@@ -1,6 +1,7 @@
 package com.example.microservices.currencyexchangeservice.controller;
 
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,8 @@ public class CircuitBreakerController {
 
   @GetMapping("/sample-api")
   @CircuitBreaker(name = "default", fallbackMethod = "hardcodedResponse")
+  @RateLimiter(name = "default")
+  // 10s -> allow 10000 calls to sample-api
   public String sampleApi() {
     logger.info("Sample api call received");
     var response = new RestTemplate().getForEntity("http://localhost:8080/some-dummy-url", String.class);
